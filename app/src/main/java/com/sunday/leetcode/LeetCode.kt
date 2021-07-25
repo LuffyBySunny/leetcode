@@ -236,8 +236,50 @@ class Solution {
         return result
     }
 
-    //
-    fun threeSum2() {
+    // 双指针法
+    // 还是先排序
 
+    fun threeSum2(nums: IntArray): List<List<Int>> {
+        val result = mutableListOf<List<Int>>()
+        nums.sort()
+        run out@{
+            nums.forEachIndexed { i, num ->
+                // 如果当前 数字 > 0 后面就不可能存在两个数和
+                if (num > 0){
+                    return@out
+                }
+                if (i > 0 && num == nums[i - 1]) {
+                    return@forEachIndexed
+                }
+                var l = i + 1
+                var r = nums.size - 1
+                while (l < r) {
+                    when {
+                        // 存在就添加进去
+                        num + nums[l] + nums[r] == 0 -> {
+                            result.add(listOf(num, nums[l], nums[r]))
+                            l ++
+                            r --
+                            while (l < r && nums[l] == nums[l - 1]) {
+                                l ++
+                            }
+                            while(l < r && nums[r] == nums[r + 1]) {
+                                r --
+                            }
+                        }
+
+                        num + nums[l] + nums[r] < 0 -> {
+                            l ++
+                        }
+                        else -> {
+                            r --
+                        }
+                    }
+                }
+            }
+        }
+
+        print(result)
+        return result
     }
 }

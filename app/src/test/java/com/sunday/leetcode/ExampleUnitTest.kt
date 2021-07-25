@@ -14,6 +14,6 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         val solution = Solution()
 
-        solution.threeSum(intArrayOf(0,0,0,0,0,-4))
+        solution.threeSum2(intArrayOf(-2,0,1,1,2))
     }
 }
