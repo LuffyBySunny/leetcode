@@ -12,6 +12,8 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val solution = Solution()
+
+        solution.threeSum(intArrayOf(0,0,0,0,0,-4))
     }
 }

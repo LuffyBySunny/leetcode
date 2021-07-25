@@ -1,5 +1,8 @@
 package com.sunday.leetcode
 
+import java.util.*
+import kotlin.collections.HashMap
+
 /**
  * Created by Sunday on 2021/7/15
  */
@@ -190,22 +193,51 @@ class Solution {
      */
 
     fun threeSum(nums: IntArray): List<List<Int>> {
-
         val result = mutableListOf<List<Int>>()
-        val temp = mutableListOf<Int>()
-        val map = mutableMapOf<Int, Int?>()
-        nums.forEachIndexed { i, num ->
-            map.clear()
-            temp.clear()
-            for (j in i+1 until nums.size) {
-                if (map[-num - nums[j]] != null) {
-                    temp.add(i)
-                    temp.add(j)
-                    map[num - nums[j]]?.let { temp.add(it) }
+        nums.sort()
+        // [-1,0,1,2,-1,-4]
+        run out@{
+            nums.forEachIndexed {i, num ->
+                val map = mutableMapOf<Int, Int?>()
+                if (num > 0) {
+                    return@out
                 }
-                map[nums[j]] = j
+                if (i > 0 && num == nums[i - 1]) {
+                    return@forEachIndexed
+                }
+                for (j in i+1 until nums.size) {
+                    if (map[-num - nums[j]] != null) {
+                        val temp = mutableListOf<Int>()
+                        temp.add(nums[i])
+                        temp.add(- num - nums[j])
+                        temp.add(nums[j])
+                        var repeat = true
+                        // 去重
+                        for (k in 0..2) {
+                            if (result.size > 0) {
+                                if (result[result.size - 1][k] != temp[k]) {
+                                    repeat = false
+                                    break
+                                }
+                            } else {
+                                repeat = false
+                            }
+
+                        }
+                        if (!repeat) {
+                            result.add(temp)
+                        }
+                    }
+                    map[nums[j]] = j
+                }
             }
         }
+        print(result)
         return result
+    }
+
+    //
+    fun threeSum2() {
+
     }
 }
