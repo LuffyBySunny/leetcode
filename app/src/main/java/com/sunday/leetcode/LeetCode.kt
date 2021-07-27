@@ -2,6 +2,7 @@ package com.sunday.leetcode
 
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.collections.HashSet
 
 /**
  * Created by Sunday on 2021/7/15
@@ -282,4 +283,65 @@ class Solution {
         print(result)
         return result
     }
+
+
+    /**
+     * https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/
+     * 使用set
+     */
+    fun lengthOfLongestSubstring(s: String): Int {
+        if (s.length < 2) {
+            return s.length
+        }
+        val set = HashSet<Char>()
+        var maxLength = 0
+        var i = 0
+        while (i < s.length) {
+            if (s.length - i < maxLength) break
+            set.clear()
+            for (j in i until s.length) {
+                if (set.contains(s[j])) {
+                    maxLength = maxLength.coerceAtLeast(set.size)
+                    break
+                } else {
+                    set.add(s[j])
+                }
+            }
+            // 每次循环结束更新最大值
+            maxLength = maxLength.coerceAtLeast(set.size)
+            i++
+        }
+        return maxLength.coerceAtLeast(set.size)
+    }
+
+    /**
+     * 最长无重复子串解法二
+     */
+    fun lengthOfLongestSubstring2(s: String): Int {
+        if (s.length < 2) {
+            return s.length
+        }
+        val set = HashSet<Char>()
+        var maxLength = 0
+        var i = 0
+        while (i < s.length) {
+            if (s.length - i < maxLength) break
+            set.clear()
+            for (j in i until s.length) {
+                if (set.contains(s[j])) {
+                    maxLength = maxLength.coerceAtLeast(set.size)
+                    break
+                } else {
+                    set.add(s[j])
+                }
+            }
+            // 每次循环结束更新最大值
+            maxLength = maxLength.coerceAtLeast(set.size)
+            i++
+        }
+        return maxLength.coerceAtLeast(set.size)
+    }
+
+
+
 }
