@@ -1,6 +1,7 @@
 package com.sunday.leetcode
 
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
@@ -316,32 +317,88 @@ class Solution {
 
     /**
      * 最长无重复子串解法二
+     * 使用HashMap
+     * aab
      */
     fun lengthOfLongestSubstring2(s: String): Int {
         if (s.length < 2) {
             return s.length
         }
-        val set = HashSet<Char>()
+        //key 是字符 value是下标
+        val map = HashMap<Char,Int>()
         var maxLength = 0
         var i = 0
         while (i < s.length) {
             if (s.length - i < maxLength) break
-            set.clear()
+            map.clear()
             for (j in i until s.length) {
-                if (set.contains(s[j])) {
-                    maxLength = maxLength.coerceAtLeast(set.size)
+                if (map.keys.contains(s[j])) {
+                    maxLength = maxLength.coerceAtLeast(map.size)
+                    // 更新下次迭代的下标，因为在这之前的子串，一定还会重复
+                    i = map[s[j]]!!
                     break
                 } else {
-                    set.add(s[j])
+                    map[s[j]] = j
                 }
             }
             // 每次循环结束更新最大值
-            maxLength = maxLength.coerceAtLeast(set.size)
+            maxLength = maxLength.coerceAtLeast(map.size)
             i++
         }
-        return maxLength.coerceAtLeast(set.size)
+        return maxLength.coerceAtLeast(map.size)
     }
 
+    /**
+     * 二叉树中第二小的节点
+     * https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/
+     * 广度优先遍历，找到同层里面比根节点打，又是最最小值的值
+     */
+
+    class TreeNode(var `val`: Int) {
+        var left: TreeNode? = null
+        var right: TreeNode? = null
+    }
+
+    /**
+     * 先用栈来个深度优先遍历 DFS
+     */
+    fun findSecondMinimumValue(root: TreeNode?): Int {
+        val stack  = Stack<TreeNode>()
+        val left = root
+        var result = -1
+        if (root?.left == null) return result
+        var min = root.`val`
+        val list = arrayListOf<TreeNode>()
+
+    }
+
+
+    /**
+     * 中序深度遍历
+     */
+    fun inOrderMid(root: TreeNode?) {
+        val stack = Stack<TreeNode>()
+        var pNode = root
+        if (pNode != null) {
+            stack.push(pNode)
+        } else {
+            return
+        }
+
+        while (stack.isNotEmpty()) {
+            if (pNode?.left != null) {
+                stack.push(pNode.left)
+                pNode = pNode.left
+            } else{
+                val node = stack.pop()
+                print(node.`val`)
+                if (node.right != null) {
+                    pNode = node.right
+                    stack.push(pNode)
+                }
+            }
+        }
+    }
 
 
 }
