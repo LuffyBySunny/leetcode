@@ -363,12 +363,35 @@ class Solution {
      * 先用栈来个深度优先遍历 DFS
      */
     fun findSecondMinimumValue(root: TreeNode?): Int {
-        val stack  = Stack<TreeNode>()
-        val left = root
-        var result = -1
-        if (root?.left == null) return result
+        if (root?.left == null) return -1
+        val list = LinkedList<TreeNode>()
+        list.addFirst(root)
         var min = root.`val`
-        val list = arrayListOf<TreeNode>()
+        // 每次循环都是一整行
+        while (list.isNotEmpty()) {
+
+            val node = list.poll()
+            if (node.`val` > root.`val`) {
+                min = if (min == root.`val`) {
+                    node.`val`
+                } else {
+                    min.coerceAtMost(node.`val`)
+                }
+            }
+            if (node.`val` == root.`val`) {
+                if (node.left != null) {
+                    list.addFirst(node.left)
+                }
+                if (node.right != null) {
+                    list.addFirst(node.right)
+                }
+            }
+        }
+        return if (min == root.`val`) {
+            -1
+        } else {
+            min
+        }
 
     }
 
