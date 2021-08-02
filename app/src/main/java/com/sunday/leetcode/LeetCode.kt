@@ -1,7 +1,6 @@
 package com.sunday.leetcode
 
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
@@ -199,7 +198,7 @@ class Solution {
         nums.sort()
         // [-1,0,1,2,-1,-4]
         run out@{
-            nums.forEachIndexed {i, num ->
+            nums.forEachIndexed { i, num ->
                 val map = mutableMapOf<Int, Int?>()
                 if (num > 0) {
                     return@out
@@ -211,7 +210,7 @@ class Solution {
                     if (map[-num - nums[j]] != null) {
                         val temp = mutableListOf<Int>()
                         temp.add(nums[i])
-                        temp.add(- num - nums[j])
+                        temp.add(-num - nums[j])
                         temp.add(nums[j])
                         var repeat = true
                         // 去重
@@ -325,7 +324,7 @@ class Solution {
             return s.length
         }
         //key 是字符 value是下标
-        val map = HashMap<Char,Int>()
+        val map = HashMap<Char, Int>()
         var maxLength = 0
         var i = 0
         while (i < s.length) {
@@ -351,7 +350,7 @@ class Solution {
     /**
      * 二叉树中第二小的节点
      * https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/
-     * 广度优先遍历，找到同层里面比根节点打，又是最最小值的值
+     * 广度优先遍历，
      */
 
     class TreeNode(var `val`: Int) {
@@ -360,16 +359,14 @@ class Solution {
     }
 
     /**
-     * 先用栈来个深度优先遍历 DFS
+     * 解法1广度优先遍历
      */
     fun findSecondMinimumValue(root: TreeNode?): Int {
         if (root?.left == null) return -1
         val list = LinkedList<TreeNode>()
         list.addFirst(root)
         var min = root.`val`
-        // 每次循环都是一整行
         while (list.isNotEmpty()) {
-
             val node = list.poll()
             if (node.`val` > root.`val`) {
                 min = if (min == root.`val`) {
@@ -423,5 +420,106 @@ class Solution {
         }
     }
 
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2gy9m/
+     * 删除排序数组中的重复项
+     * 遍历数组，然后清除数组
+     * 1,1,2
+     * 暴力破解法
+     */
+    fun removeDuplicates(nums: IntArray): Int {
+        var i = 0
+        var j : Int
+        var length = nums.size
+        while (i < length) {
+            if (i + 1 < length && nums[i] == nums[i + 1]) {
+                j = i
+                while (j + 1 < length) {
+                    nums[j] = nums[j + 1]
+                    j ++
+                }
+                length --
+                i--
+            }
+            i++
+        }
+        return length
+    }
+
+    /**
+     * 双指针法 效率非常高
+     * 112
+     */
+    fun removeDuplicates2(nums: IntArray): Int {
+        var left = 0
+        var right = 0
+        while (right + 1 < nums.size) {
+            if (nums[right] != nums[right + 1]) {
+                // 将当前的数字放到left后面
+                if (right > left) {
+                    nums[left + 1] = nums[right + 1]
+                }
+                left ++
+            }
+            right ++
+        }
+        return left + 1
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2zsx1/
+     * 买卖股票的最佳时机
+     */
+
+    /**
+     * 解法1 动态规划
+     * 每一天分为两种情况，第一种 手中有股票，第二种手中没有股票
+     * 假设第i 天手中有股票 hold, 没股票为noHold
+     * 那第i天没股票 分两种，这天没有买卖股票、这天卖了股票
+     * noHold = max(noHold, hold + price[i])
+     *
+     * 那第i天有股票也分两种，这天没有买卖股票、这天买了股票
+     * hold = max(hold, noHold - price[i])
+     */
+
+    open fun maxProfit(prices: IntArray?): Int {
+        if (prices == null || prices.size < 2) return 0
+        val length = prices.size
+        //初始条件
+        var hold = -prices[0] //持有股票
+        var noHold = 0 //没持有股票
+        for (i in 1 until length) {
+            //递推公式转化的
+            noHold = noHold.coerceAtLeast(hold + prices[i])
+            hold = hold.coerceAtLeast(noHold - prices[i])
+        }
+        //最后一天肯定是手里没有股票的时候利润才会最大，
+        //所以这里返回的是noHold
+        return noHold
+    }
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2skh7/
+     * 旋转数组
+     * 解法1 开辟新数组，将计算好位置的元素放到新数组中
+     * 解法2 先全部翻转数组，再翻转前k个，再翻转后length-k个
+     */
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x248f5/
+     * 是否存在重复数字  set 法
+     */
+    fun containsDuplicate(nums: IntArray): Boolean {
+        val set = HashSet<Int>()
+        nums.forEach {
+            if (!set.add(it)) {
+                return true
+            }
+        }
+        return false
+    }
 
 }
