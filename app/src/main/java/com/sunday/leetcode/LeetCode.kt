@@ -522,4 +522,17 @@ class Solution {
         return false
     }
 
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x21ib6/
+     * 只出现一次的数字
+     */
+
+    fun singleNumber(nums: IntArray): Int {
+        var result = 0
+        nums.forEach {
+            result = it.xor(result)
+        }
+        return result
+    }
+
 }
