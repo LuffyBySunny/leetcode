@@ -508,6 +508,8 @@ class Solution {
      */
 
 
+
+
     /**
      * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x248f5/
      * 是否存在重复数字  set 法
@@ -533,6 +535,77 @@ class Solution {
             result = it.xor(result)
         }
         return result
+    }
+
+
+    /**
+     * https://leetcode-cn.com/problems/UHnkqh/
+     * 链表翻转
+     */
+
+    class ListNode(var `val`: Int) {
+        var next: ListNode? = null
+    }
+    //[1,2,3,4,5]
+    fun reverseList(head: ListNode?): ListNode? {
+        var left : ListNode? = null // 左节点
+        var right = head // 头结点
+        while (right != null) {
+            val temp = right.next
+            right.next = left
+            left = right // 左节点右移
+            right = temp // 头结点右移
+
+        }
+        return left
+    }
+
+
+    /**
+     * 整数翻转
+     * https://leetcode-cn.com/problems/reverse-integer/
+     * 有最大值和最小值 以及符号
+     *
+     * 321
+     */
+
+    fun reverse(x: Int): Int {
+        val fuhao = if (x > 0) 1 else -1
+        var source = Math.abs(x)
+        var result = 0
+        while (source > 0) {
+            val i = source % 10
+            source /= 10
+            // 如果大于最大值
+            if (result > (Int.MAX_VALUE - i) / 10) {
+                return 0
+            }
+            result = result * 10 + i
+        }
+        return result * fuhao
+    }
+
+
+    /**
+     * https://leetcode-cn.com/problems/palindrome-number/
+     * 是否是回文数字
+     * 解法1 先翻转 再比较
+     */
+
+    fun isPalindrome(x: Int): Boolean {
+        if (x < 0) return false
+        var source = x
+        var result = 0
+        while (source > 0) {
+            val i = source % 10
+            source /= 10
+            // 如果大于最大值
+            if (result > (Int.MAX_VALUE - i) / 10) {
+                return false
+            }
+            result = result * 10 + i
+        }
+        return x == result
     }
 
 }
