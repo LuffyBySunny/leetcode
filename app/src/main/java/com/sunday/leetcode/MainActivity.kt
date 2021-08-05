@@ -2,7 +2,7 @@ package com.sunday.leetcode
 
 import android.content.res.Resources
 import android.graphics.Path
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 

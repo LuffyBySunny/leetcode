@@ -37,14 +37,6 @@ class Solution {
         // key存值，value存下标
         val map = HashMap<Int, Int>(nums.size - 1)
         for (i in nums.indices) {
-            //比如 31245
-            // target = 6
-            // 当map[6 - 3] = map[3] == null map[3] = 0
-            // map[6 - 1] = map[5] == null map[1] = 1
-            // map[6 - 2] = map[4] == null map[2] = 2
-            // map[6 - 4] = map[2] != null map[4] = 3
-            // map[6 - 5] = map[1] ==
-            // map[target - nums[n]] != null = nums[m], 说明存在 nums[m] + num[n] = target
            if (map[target - nums[i]] != null) {
                return IntArray(2).apply {
                    this[0] = map[target - nums[i]]!!
@@ -54,10 +46,6 @@ class Solution {
            }
             map[nums[i]] = i
         }
-        // 3 2 4
-        // m[ 6 - 3] = m[3]   m[4] = 0;
-        // m[6 - 2] = m[4]    m[2] = 1
-        // m[6 - 4] = m[2]
         return IntArray(2)
     }
 
@@ -593,7 +581,7 @@ class Solution {
      */
 
     fun isPalindrome(x: Int): Boolean {
-        if (x < 0) return false
+        if (x < 0 || (x % 10 == 0 && x != 0)) return false
         var source = x
         var result = 0
         while (source > 0) {
@@ -604,8 +592,165 @@ class Solution {
                 return false
             }
             result = result * 10 + i
+
+            // 如果结果大于剩余数字就没有再比较下去的必要了
+            if (result >= source) {
+                break
+            }
         }
-        return x == result
+        return (source == result) or (result / 10 == source)
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2y0c2/
+     * 两个数组的交集
+     * 双指针法 先排序
+     * 1,2,2,1
+     * 2,2
+     */
+
+    fun intersect(nums1: IntArray, nums2: IntArray): IntArray {
+        nums1.sort()
+        nums2.sort()
+        val result = mutableListOf<Int>()
+        var i = 0
+        var j = 0
+        while (i < nums1.size && j < nums2.size) {
+            if (nums1[i] == nums2[j]) {
+                result.add(nums1[i])
+                i++
+                j++
+                continue
+            }
+            // 向后移动
+            if (nums1[i] < nums2[j]) {
+                i ++
+            } else {
+                j ++
+            }
+        }
+       return result.toIntArray()
+    }
+
+    /**
+     * 解法2 使用map记录每个元素出现的个数
+     * 这个方法比第一个好多了
+     * 注意 记录相关的思想就用map
+     */
+    fun intersect2(nums1: IntArray, nums2: IntArray): IntArray {
+
+        val result = mutableListOf<Int>()
+        val nums1Map = HashMap<Int, Int>(5)
+        // 先把每个数字出现的个数保存下来
+        nums1.forEach {
+            if (nums1Map.contains(it)) {
+                nums1Map[it] = nums1Map[it]!!.plus(1)
+            } else {
+                nums1Map[it] = 1
+            }
+        }
+        nums2.forEach {
+            if (nums1Map.contains(it) && nums1Map[it]!! > 0) {
+                result.add(it)
+                nums1Map[it] = nums1Map[it]!! - 1
+            }
+        }
+        return result.toIntArray()
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2cv1c/
+     * 数组加1
+     * 8,9,9,9
+     */
+    fun plusOne(digits: IntArray): IntArray {
+        var carrier = 0 // 进位
+        val result = mutableListOf<Int>()
+        digits.forEach {
+            result.add(it)
+        }
+        val size = result.size
+        for (i in size - 1 downTo 0) {
+            var fix = 0
+            if (i == size - 1) {
+                fix = 1
+            }
+            if (digits[i] + fix + carrier < 10) {
+                result[i] = digits[i] + fix + carrier
+                return result.toIntArray()
+            } else {
+                result[i] = 0
+                if (i == 0) {
+                    result.add(0, 1)
+                }
+                carrier = 1
+            }
+        }
+        return result.toIntArray()
+    }
+
+    fun plusOne2(digits: IntArray): IntArray {
+        for (i in digits.size - 1 downTo 0) {
+            // 如果这个数字不是9 则直接++返回
+            if (digits[i] != 9) {
+                digits[i] ++
+                return digits
+            } else{
+                digits[i] = 0
+            }
+        }
+        // 走到这说明全是9
+        val result = IntArray(digits.size + 1)
+        result[0] = 1
+        return result
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2ba4i/
+     * 移动数组中的0
+     * 暴力法
+     */
+    fun moveZeroes(nums: IntArray): Unit {
+        var left = 0
+        var right = nums.size - 1
+        while (left < right) {
+            if (nums[left] != 0) {
+                left++
+                continue
+            }
+            //将数组向前移动一位
+            var i = left
+            while (i < right) {
+                nums[i] = nums[i + 1]
+                i++
+            }
+            // 将末尾数组置为0
+            nums[right] = 0
+            // 右指针向前一位
+            right--
+        }
+    }
+
+
+    /**
+     * 换一种思路 只需将非0的数字移动到上个非0数字的后面就行
+     * 0,1,2,0
+     */
+    fun moveZeroes2(nums: IntArray): Unit {
+        var index = 0 // 上个非0值的位置
+        nums.forEach {
+            if (it != 0) {
+                nums[index] = it
+                index ++
+            }
+        }
+        while (index < nums.size) {
+            nums[index] = 0
+            index ++
+        }
     }
 
 }
