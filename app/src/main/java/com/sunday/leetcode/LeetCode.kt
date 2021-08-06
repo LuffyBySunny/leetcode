@@ -753,4 +753,45 @@ class Solution {
         }
     }
 
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/x2f9gg/
+     * 有效的数独
+     * 将每一个单元存在的数字存下来，遍历的时候，如果再遍历到，则视为非数独
+     * 这里的每个单元指的是 行、列、小9宫格
+     */
+
+    fun isValidSudoku(board: Array<CharArray>): Boolean {
+        // 先定义三个存储单元
+        val size = board.size
+        // [0][3] 表示第 0行是否有数字3
+        // 也可以用HashMap
+        val row = Array(size){IntArray(size)}
+        val column = Array(size){IntArray(size)}
+        val set = Array(size){IntArray(size)}
+        for (i in board.indices) {
+            for (j in board[0].indices) {
+                // 先把数字拿出来
+                if (board[i][j] == '.') {
+                    continue
+                }
+                val num = board[i][j] - '0' - 1
+                if (row[i][num] != 0) {
+                    return false
+                }
+                if (column[j][num] != 0) {
+                    return false
+                }
+                //计算出是第几个九宫格
+                val index = i / 3 * 3 + j / 3
+                if (set[index][num] != 0) {
+                    return false
+                }
+                row[i][num] = 1
+                column[j][num] = 1
+                set[index][num] = 1
+            }
+        }
+        return true
+    }
+
 }
