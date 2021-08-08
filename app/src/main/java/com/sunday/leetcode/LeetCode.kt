@@ -794,4 +794,166 @@ class Solution {
         return true
     }
 
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnhhkv/
+     * 旋转二维数组
+     * 之前很怕这个题啊
+     * 直接旋转
+     */
+
+    fun rotate(matrix: Array<IntArray>): Unit {
+        val size = matrix.size
+
+        // 对称的，只需要旋转上半部分
+        // 由左下角向右转
+        for (i in 0 until size / 2) {
+            for (j in i until size - i - 1) {
+
+                val m = size - j - 1
+
+                val n = size - i - 1
+                // 左上角元素
+                // matrix[i][j] 左上
+                // matrix[m][i] 左下
+                // matrix[n][m] 右下
+                // matrix[j][n]
+                val temp = matrix[i][j]
+                matrix[i][j] = matrix[m][i]
+                matrix[m][i] = matrix[n][m]
+                matrix[n][m] = matrix[j][n]
+                matrix[j][n] = temp
+            }
+        }
+    }
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnhbqj/
+     * 字符串翻转
+     * 方法一 递归
+     */
+    fun reverseString(s: CharArray): Unit {
+        reverse(0, s.size - 1, s)
+    }
+
+    fun reverse(left: Int, right: Int, s: CharArray) {
+        if (left > right) return
+        val temp = s[left]
+        s[left] = s[right]
+        s[right] = temp
+        reverse(left + 1, right - 1, s)
+    }
+
+    /**
+     * 方法二 双指针套循环
+     */
+
+    fun reverseString2(s: CharArray): Unit {
+        var left = 0
+        var right = s.size - 1
+
+        while (left < right) {
+            val temp = s[left]
+            s[left] = s[right]
+            s[right] = temp
+            left ++
+            right --
+        }
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xn5z8r/
+     * 字符串中的第一个唯一字符
+     */
+
+    fun firstUniqChar(s: String): Int {
+        val set = HashMap<Char, Int>()
+        var i = 0
+        while (i < s.length) {
+            set[s[i]] = set[s[i]]?.plus(1) ?: 1
+            i++
+        }
+        i = 0
+        while (i < s.length) {
+            if (set[s[i]] == 1) {
+                return i
+            }
+            i++
+        }
+
+        return -1
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xn96us/
+     * 字母异位词
+     * 两个字符串中的 字母是否完全相同
+     * 使用Hash表存储第一个字符串
+     */
+
+    fun isAnagram(s: String, t: String): Boolean {
+
+        var i = 0
+        val array = IntArray(26)
+
+        while (i < s.length) {
+            array[s[i++] - 'a']++
+        }
+
+        i = 0
+        while (i < t.length) {
+            array[t[i++] - 'a']--
+        }
+
+        array.forEach {
+            if (it != 0) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+
+    /**
+     * 实现Indexof KPM算法
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnr003/
+     */
+
+    fun strStr(haystack: String, needle: String): Int {
+        haystack.indexOf(needle)
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xne8id/
+     * 验证回文字符串
+     * 双指针
+     */
+
+    fun isPalindrome(s: String): Boolean {
+        var left = 0
+        var right = s.length - 1
+        if (s.length < 2) return true
+
+        while (left < right) {
+            // 跳过特殊字符
+            while (left < right && !Character.isLetterOrDigit(s[left])) {
+                left ++
+            }
+            while (left < right && !Character.isLetterOrDigit(s[right])) {
+                right --
+            }
+            if (s[left].equals(s[right], true)) {
+                left++
+                right--
+            } else {
+                return false
+            }
+        }
+        return true
+    }
+
 }
