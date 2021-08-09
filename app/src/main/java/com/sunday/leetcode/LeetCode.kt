@@ -923,7 +923,7 @@ class Solution {
      */
 
     fun strStr(haystack: String, needle: String): Int {
-        haystack.indexOf(needle)
+        return haystack.indexOf(needle)
     }
 
 
@@ -954,6 +954,120 @@ class Solution {
             }
         }
         return true
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnpvdm/
+     * 外观数列
+     * 递归解法
+     * 输出第n个外观数列
+     */
+
+    fun countAndSay(n: Int): String {
+        if(n == 1) return "1"
+        // 每次计算前都能获取上次的结果
+        // 获得上次的结果
+        val last = countAndSay(n - 1)
+
+        // 统计每个字符的个数
+        var count = 0
+        // 当前的字符
+        var current = last[0]
+        val result = StringBuilder()
+        // 对当前字符串进行遍历
+        last.forEach {
+            if (it == current) {
+                // 相等的时候只需记录个数
+                count ++
+            } else {
+                // 不相等的时候保存结果，然后更新个数和需要统计的字符
+                result.append(count)
+                result.append(current)
+                count = 1
+                current = it
+            }
+        }
+        // 保存最后的结果
+        result.append(count)
+        result.append(current)
+        return result.toString()
+    }
+
+
+
+    /**链表*/
+
+    /**
+     * 删除链表中的节点
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnarn7/
+     * 只输入要删除的节点
+     * 解法：将下一个节点的值拿过来，然后指向下个节点的下个
+     */
+    fun deleteNode(node: ListNode?) {
+        node!!.`val` = node.next!!.`val`
+        node.next = node.next!!.next
+    }
+
+    /**
+     * 删除链表的倒数第n个结点
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xn2925/
+     * 双指针解法，right 比 left快n个，当right.next为null的时候删除 left就行了
+     */
+
+    fun removeNthFromEnd(head: ListNode?, n: Int): ListNode? {
+        var left = head // 代表倒数n + 1 个结点，删除的是它的下一个节点
+        var right = head
+        var count = 0
+        while (right != null) {
+            if (count > n) {
+                left = left?.next
+            }
+            right = right.next
+            count ++
+        }
+
+        // 当删除的是第一个节点需要特殊处理
+        if (n == count) {
+            return head?.next
+        }
+
+        left!!.next = left.next?.next
+
+        return head
+    }
+
+
+    /**
+     * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnnbp2/
+     * 合并两个有序链表
+     */
+
+    // 双指针，谁大谁往后
+    fun mergeTwoLists(l1: ListNode?, l2: ListNode?): ListNode? {
+        if (l1 == null)
+            return l2
+        if (l2 == null)
+            return l1
+        val dummy = ListNode(0)
+        var  curr = dummy
+        var one  = l1
+        var two = l2
+
+        while (one != null && two != null) {
+            //比较一下，哪个小就把哪个放到新的链表中
+            if (one.`val` <= two.`val`) {
+                curr.next = one
+                one = one.next
+            } else {
+                curr.next = two
+                two = two.next
+            }
+            curr = curr.next!!
+        }
+        //然后把那个不为空的链表挂到新的链表中
+        curr.next = one ?: two
+        return dummy.next
     }
 
 }
