@@ -1070,4 +1070,148 @@ class Solution {
         return dummy.next
     }
 
+    /**
+     * 两个栈实现一个队列
+     * https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/
+     */
+
+    val stack1 = Stack<Int>() // 存放插入数据
+    val stack2 = Stack<Int>() // 存放要pop出去的数据
+    fun appendTail(value: Int) {
+        stack1.push(value)
+    }
+
+    fun deleteHead(): Int {
+        var result = -1
+        // 如果需要pop的栈没数据，先把stack1的数据填充上去
+        if (stack2.isEmpty()) {
+            while (stack1.isNotEmpty()) {
+                stack2.push(stack1.pop())
+            }
+        }
+        if (stack2.isNotEmpty()) {
+            result = stack2.pop()
+        }
+
+        return result
+    }
+
+
+    /**
+     * https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/
+     * 包含最小值的栈
+     */
+    var dataStack = Stack<Int>()
+    var minStack = Stack<Int>()
+    fun push(x: Int) {
+        dataStack.push(x)
+        if (minStack.isEmpty()) {
+            minStack.push(x)
+        } else {
+            if (minStack.peek() < x) {
+                minStack.push(minStack.peek())
+            } else {
+                minStack.push(x)
+            }
+        }
+    }
+
+    fun pop() {
+        dataStack.pop()
+        minStack.pop()
+    }
+
+    fun top(): Int {
+        return dataStack.peek()
+    }
+
+    fun min(): Int {
+        return minStack.peek()
+    }
+
+
+    /**
+     * https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/
+     * 从尾到头打印链表
+     */
+    val array = mutableListOf<Int>()
+    fun reversePrint(head: ListNode?): IntArray {
+        if (head?.next == null) {
+            if (head != null) {
+                array.add(head.`val`)
+            }
+            return array.toIntArray()
+        }
+        reversePrint(head.next)
+        array.add(head.`val`)
+        return array.toIntArray()
+    }
+
+    /**
+     * 解法2 使用栈
+     */
+    fun reversePrint2(head: ListNode?): IntArray {
+        var next = head
+        val stack = LinkedList<Int>()
+        while (next != null) {
+            stack.addLast(next.`val`)
+            next = next.next
+        }
+        array.clear()
+        while (stack.isNotEmpty()) {
+            array.add(stack.removeLast())
+        }
+        return array.toIntArray()
+    }
+
+
+    /**
+     * 再次翻转链表
+     */
+    fun reverseList3(head: ListNode?): ListNode? {
+        var prev : ListNode? = null
+        var next = head
+        while (next != null) {
+            val temp = next.next
+            next.next = prev
+            prev = next
+            next = temp
+        }
+        return prev
+    }
+
+    /**
+     * 复杂链表的复制
+     * https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/
+     * 复制本身和random指针
+     */
+
+    class Node(val `val`: Int) {
+        var next: Node?
+        var random: Node?
+        init {
+            next = null
+            random = null
+        }
+    }
+    fun copyRandomList(head: Node?): Node? {
+        val map = mutableMapOf<Node?, Node?>()
+        var curr = head
+        // 复制节点，完成映射
+        while (curr != null) {
+            map[curr] = Node(curr.`val`)
+            curr = curr.next
+        }
+
+        curr = head
+        // 完成指针的
+        while (curr != null) {
+            // 每个value都是新创建的值
+            map[curr]?.next = map[curr.next]
+            map[curr]?.random = map[curr.random] //  map[curr.random] 在上一步已经被完美的复制了
+            curr = curr.next
+        }
+        return map[head]
+    }
+
 }
