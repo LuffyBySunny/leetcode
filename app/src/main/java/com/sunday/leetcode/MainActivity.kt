@@ -1,11 +1,14 @@
 package com.sunday.leetcode
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Path
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.webkit.ValueCallback
@@ -14,17 +17,43 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.activity_main.*
+import java.net.Socket
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val path = Path()
-        val dialogFragment = DialogFragment()
-        dialogFragment.dialog.window
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100F, Resources.getSystem().displayMetrics)
 
+        val socket = Socket()
+        button.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.data = Uri.parse("test://123")
+            startActivity(intent)
+        }
+
+        // 这个是拿到大小的最佳时机
+        button.viewTreeObserver.addOnGlobalLayoutListener {
+
+        }
+
+        // 这个就是绘制完成
+        button.post {
+
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        thread {
+            if (window.decorView.parent != null) {
+                Log.d("1", "")
+            }
+            button.setText("123")
+        }
     }
 }
 

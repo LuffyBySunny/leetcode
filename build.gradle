@@ -24,4 +24,25 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+
+    // 如果添加在运行时的任务，doLast
+    doLast{
+
+    }
+
+    doFirst {
+
+    }
+}
+
+task test() {
+    doLast {
+        print("test")
+    }
+}
+
+task task1(dependsOn : test) {
+    doLast {
+        print("test1")
+    }
 }

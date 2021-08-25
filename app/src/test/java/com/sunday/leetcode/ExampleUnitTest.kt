@@ -14,8 +14,10 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         val solution = Solution()
 
-        solution.plusOne(IntArray(1).apply {
-            this[0] = 9
-        })
+        var a = 10
+        var b = a
+        a = 20
+        println(solution.maxLengthChar("aaabbbcbbccc"))
+        println(b)
     }
 }
