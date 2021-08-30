@@ -5,6 +5,7 @@ import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 import kotlin.math.max
 import java.util.Scanner
+import kotlin.collections.ArrayList
 
 
 /**
@@ -2270,7 +2271,7 @@ class Solution {
 
     /**
      * https://leetcode-cn.com/leetbook/read/all-about-array/x9nivs/
-     * 原地删除数组，最多出现两次
+     * 原地删除数字，最多出现两次
      */
     fun removeDuplicatesMax2(nums: IntArray): Int {
         var left = 0
@@ -2420,6 +2421,81 @@ class Solution {
         }
         return null
     }
+
+
+    /**
+     * 二分查找
+     */
+    fun erfen(nums : IntArray, target : Int) : Boolean{
+        var start = 0
+        var end = nums.size - 1
+        while (start <= end) {
+            val mid = (end - start) / 2 + start
+            println(mid)
+            if (nums[mid] == target) {
+                return true
+            } else if (nums[mid] < target) {
+                start = mid + 1
+            } else {
+                end = mid - 1
+            }
+        }
+        return false
+    }
+
+
+    /**
+     * https://leetcode-cn.com/problems/permutations/
+     * 一维数组全排列
+     * 回溯法，每次递归完成的时候就回溯，因为把自己添加进去了，
+     */
+
+    fun permute(nums: IntArray): List<List<Int>> {
+        val result = mutableListOf<List<Int>>()
+        fun backup(mutableList: MutableList<Int>) {
+            if (mutableList.size == nums.size) {
+                result.add(ArrayList<Int>(mutableList))
+                return
+            }
+            nums.forEach {
+                if (!mutableList.contains(it)) {
+                    mutableList.add(it)
+                    backup(mutableList) // 当backup返回的时候，将添加的数据移除掉，就可以添加其他数据了
+                    mutableList.remove(it)
+                }
+            }
+        }
+        backup(mutableListOf())
+        return result
+    }
+
+
+    /**
+     * https://leetcode-cn.com/problems/coin-change/
+     * 零钱兑换
+     * 动态规划
+     * 假设 组成i 的最小个数是 f(i) 那 fi(i) = min(f(i - c1) ,f(i - c2),f(i - c3)) + 1
+     */
+
+    fun coinChange(coins: IntArray, amount: Int): Int {
+        val dp = IntArray(amount + 1)
+        dp[0] = 0
+        for (i in 1 until amount + 1) {
+            dp[i] = Int.MAX_VALUE - 1 // 减一 防止下面+1的时候溢出
+            coins.forEach {
+                if (i >= it) {
+                    dp[i] = Math.min(dp[i], dp[i - it] + 1)
+                }
+            }
+        }
+        return if (dp[amount] == Int.MAX_VALUE - 1) -1 else dp[amount]
+    }
+
+
+
+
+
+
 
 
 }

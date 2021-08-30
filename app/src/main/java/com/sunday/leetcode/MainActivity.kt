@@ -44,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         button.post {
 
         }
+
+        val test = Test()
+        test.outPut("123", "abc")
     }
 
     override fun onResume() {

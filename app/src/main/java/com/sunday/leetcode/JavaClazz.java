@@ -7,6 +7,6 @@ public class JavaClazz {
 
     public void test() {
         Test test = new Test();
-        Test.TestInner inner = test.new TestInner();
+
     }
 }

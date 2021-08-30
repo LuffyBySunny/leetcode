@@ -1,8 +1,12 @@
 package com.sunday.leetcode
 
+import android.os.Handler
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.concurrent.thread
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,12 +16,29 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        val solution = Solution()
+        val test = com.sunday.leetcode.Test()
 
-        var a = 10
-        var b = a
-        a = 20
-        println(solution.maxLengthChar("aaabbbcbbccc"))
-        println(b)
+        test.outPut("123", "abc")
+
+
+        Thread.sleep(10000)
+
+        var concurrentHashMap = ConcurrentHashMap<Int, Int>()
+        concurrentHashMap.size
+
+        val atomicInteger = AtomicInteger(0)
+        atomicInteger.compareAndSet(0, 1)
+
     }
+
+
+
+    companion object {
+        @JvmStatic
+        fun main(args : Array<String>) : Unit {
+
+        }
+    }
+
+
 }
