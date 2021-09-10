@@ -5,8 +5,10 @@ package com.sunday.leetcode;
  */
 public class JavaClazz {
 
+
     public void test() {
         Test test = new Test();
+
 
     }
 }

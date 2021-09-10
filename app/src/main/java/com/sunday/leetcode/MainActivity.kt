@@ -15,6 +15,7 @@ import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         val socket = Socket()
         button.setOnClickListener {

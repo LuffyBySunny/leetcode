@@ -1,6 +1,7 @@
 package com.sunday.leetcode;
 
 
+import android.os.Handler;
 import android.util.Log;
 
 /**
@@ -52,6 +53,8 @@ public class Test {
         };
         new Thread(task1).start();
         new Thread(task2).start();
+
+
 
 
     }

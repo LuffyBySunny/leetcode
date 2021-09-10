@@ -1819,7 +1819,6 @@ class Solution {
     /**
      * 是否包含子串
      */
-
     fun main(args: Array<String>) {
         val read = Scanner(System.`in`)
 
@@ -1935,13 +1934,14 @@ class Solution {
 
 
     /**
-     * 回文链表
+     * 判断是否为回文链表
      * https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnv1oc/
      * 快慢指针，后半部分链表翻转
      * 快指针每次移动两次，慢指针每次移动一次
      */
 
     fun isPalindrome(head: ListNode?): Boolean {
+        // 翻转链表
         fun reverse(root : ListNode?) : ListNode?{
             var prev : ListNode? = null
             var current = root
@@ -2007,6 +2007,7 @@ class Solution {
 
     /**
      * 环形节点的开始
+     * 只需要慢指针继续走，快指针回到头，然后第一个相交的点就是交点
      */
 
     fun hasCycle2(head: ListNode?): Boolean {
@@ -2482,6 +2483,8 @@ class Solution {
         dp[0] = 0
         for (i in 1 until amount + 1) {
             dp[i] = Int.MAX_VALUE - 1 // 减一 防止下面+1的时候溢出
+
+            // 内层循环，决定出最小的f(i)
             coins.forEach {
                 if (i >= it) {
                     dp[i] = Math.min(dp[i], dp[i - it] + 1)
